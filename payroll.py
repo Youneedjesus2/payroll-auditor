@@ -6,7 +6,7 @@ to identify staff who overworked client POS limits.
 
 Run with: streamlit run payroll_app_v2.py
 """
-##
+
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -28,6 +28,9 @@ st.set_page_config(
 def read_evv_report(uploaded_file):
     """Read EVV Services Rendered Report."""
     try:
+        # IMPORTANT: Reset file pointer to beginning
+        uploaded_file.seek(0)
+        
         # Get headers from row with "Service Date"
         df_raw = pd.read_excel(uploaded_file, sheet_name='EVV SRR-SA Detail Comments')
         
@@ -41,6 +44,9 @@ def read_evv_report(uploaded_file):
         if header_row is None:
             st.error("Could not find header row in EVV file")
             return None
+        
+        # Reset file pointer again before second read
+        uploaded_file.seek(0)
         
         # Read with proper headers
         headers = df_raw.iloc[header_row].tolist()
@@ -69,6 +75,9 @@ def read_evv_report(uploaded_file):
 def read_claims_report(uploaded_file):
     """Read Provider Portal Claims Report."""
     try:
+        # IMPORTANT: Reset file pointer to beginning
+        uploaded_file.seek(0)
+        
         # Get headers
         df_raw = pd.read_excel(uploaded_file, sheet_name='Provider Claims Report')
         
@@ -82,6 +91,9 @@ def read_claims_report(uploaded_file):
         if header_row is None:
             st.error("Could not find header row in Claims file")
             return None
+        
+        # Reset file pointer again before second read
+        uploaded_file.seek(0)
         
         # Read with proper headers
         headers = df_raw.iloc[header_row].tolist()
