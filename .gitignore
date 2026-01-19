@@ -40,3 +40,7 @@ env/
 # OS
 .DS_Store
 Thumbs.db
+
+# Database
+*.db
+payroll_data.db
